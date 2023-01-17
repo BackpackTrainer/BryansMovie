@@ -1,11 +1,15 @@
 package com.barclays.movies.controllers;
 
 import com.barclays.movies.model.Movie;
+import com.barclays.movies.service.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,24 +18,14 @@ import java.util.List;
 @RequestMapping("/movie")
 public class MovieController {
 
+    @Autowired
+    private MovieService movieService;
+
     @GetMapping
     public ModelAndView get() {
         ModelAndView modelAndView = new ModelAndView("movies");
 
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movie.setId(1L);
-        movie.setTitle("Glass Onion");
-        movie.setIsbn("2345-02");
-
-        movies.add(movie);
-
-        movie = new Movie();
-        movie.setId(2L);
-        movie.setTitle("Knives Out");
-        movie.setIsbn("2346-02");
-
-        movies.add(movie);
+        List<Movie> movies = movieService.findAll();
 
         modelAndView.addObject("movies", movies);
 
@@ -42,44 +36,43 @@ public class MovieController {
     public ModelAndView add()  {
         ModelAndView modelAndView = new ModelAndView("addMovie");
 
-        Movie movie = new Movie();
-        movie.setId(1L);
-        movie.setTitle("Random The Sequel");
-        movie.setIsbn("2457-99");
+        Movie movie = movieService.findById(0L);
 
         modelAndView.addObject("movie", movie);
         return modelAndView;
-
     }
 
     @GetMapping("/{id}")
     public ModelAndView get(@PathVariable Long id) {
-        Movie movie = new Movie();
-        movie.setId(id);
-        movie.setTitle("Random");
-        movie.setIsbn("2456-99");
+
+        Movie movie = movieService.findById(id);
 
         List<Movie> movies = new ArrayList<>();
-
-        ModelAndView modelAndView = new ModelAndView("movies");
-
         movies.add(movie);
 
+        ModelAndView modelAndView = new ModelAndView("movies");
         modelAndView.addObject("movies", movies);
+
         return modelAndView;
-        }
+    }
 
         @PostMapping
-        public ModelAndView post(Movie movie) {
-            ModelAndView modelAndView = new ModelAndView("addMovie");
+        public ModelAndView post(@Valid @ModelAttribute Movie movie, BindingResult result) {
+            ModelAndView modelAndView = new ModelAndView();
 
-            System.out.println("Title: " + movie.getTitle());
-            modelAndView.addObject("addMovieSuccess", true);
-            modelAndView.addObject("addMovieTitle", movie.getTitle());
+            if(result.hasErrors()) {
+                modelAndView.setViewName("addMovie");
+            }
+            else {
+                modelAndView.setViewName("addMovie");
 
-            modelAndView.addObject("movie", movie);
+                modelAndView.addObject("addMovieSuccess", true);
+                modelAndView.addObject("addMovieTitle", movie.getTitle());
 
+                modelAndView.addObject("movie", movie);
+            }
             return modelAndView;
+
         }
 
         @PutMapping

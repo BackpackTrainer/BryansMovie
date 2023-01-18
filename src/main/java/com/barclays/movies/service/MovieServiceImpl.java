@@ -1,29 +1,36 @@
 package com.barclays.movies.service;
 
 import com.barclays.movies.model.Movie;
+import com.barclays.movies.repository.MovieRepository;
+import com.barclays.movies.repository.MovieTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("movieService")
 public class MovieServiceImpl implements MovieService {
 
     Logger logger = LoggerFactory.getLogger((MovieServiceImpl.class));
 
+    private final MovieRepository movieRepository;
+
+    private final MovieTypeRepository movieTypeRepository;
+
+    public MovieServiceImpl(MovieRepository movieRepository, MovieTypeRepository movieTypeRepository) {
+        this.movieRepository = movieRepository;
+        this.movieTypeRepository = movieTypeRepository;
+    }
+
     @Override
     public Movie save(Movie movie) {
         logger.info("Entering the save function");
 
-        if(movie.getId() !=0) {
-           logger.debug("id!=)");
-        }
-        else {
-            logger.debug("id == 0");
-
-            }
+    movie = movieRepository.saveAndFlush(movie);
         return movie;
     }
 
@@ -31,18 +38,7 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> findAll()  {
         logger.info("Entering findAll function");
 
-        List<Movie> movies = new ArrayList<>();
-           Movie movie = new Movie();
-           movie.setId(2L);
-           movie.setTitle("Knives Out");
-           movie.setIsbn("2346-02");
-           movies.add(movie);
-
-            movie = new Movie();
-            movie.setId(1L);
-            movie.setTitle("Glass Onion");
-            movie.setIsbn("2346-01");
-            movies.add(movie);
+        List<Movie> movies = movieRepository.findAll();
 
         return movies;
     }
@@ -51,17 +47,13 @@ public class MovieServiceImpl implements MovieService {
     public Movie findById(Long id)  {
         logger.info("Entering the findById function");
 
-        Movie movie = new Movie();
+        Movie movie = null;
+        Optional<Movie> optMovie = movieRepository.findById(id);
 
-        if(id == 0) {
-            movie.setId(1234L);
-            movie.setTitle("Random");
-            movie.setIsbn("2456-99");
-        }
-        else {
-            movie.setId(id);
-            movie.setIsbn("123-567");
-            movie.setTitle("A Fake Movie");
+        if(optMovie.isPresent()) {
+            movie = optMovie.get();
+        }else {
+            movie = movieRepository.getReferenceById(1L);
         }
         return movie;
     }

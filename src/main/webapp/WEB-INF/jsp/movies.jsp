@@ -17,14 +17,21 @@
         <th>ID</th>
         <th>ISBN</th>
         <th>TITLE</th>
+        <th>TYPE</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${movies}" var="movie">
         <tr>
-            <td>${movie.id}</td>
+            <td><a href = "
+                <c:url value = "/movie/edit">
+                    <c:param name="id" value="${movie.id}" />
+                </c:url>
+            ">${movie.id}</a>
+            </td>
             <td>${movie.isbn}</td>
             <td>${movie.title}</td>
+            <td>${movie.movieType.type}</td>
         </tr>
     </c:forEach>
     </tbody>

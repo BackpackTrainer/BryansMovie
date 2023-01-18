@@ -1,16 +1,16 @@
 package com.barclays.movies.controllers;
 
 import com.barclays.movies.model.Movie;
+import com.barclays.movies.model.MovieType;
+import com.barclays.movies.repository.MovieTypeRepository;
 import com.barclays.movies.service.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.sql.SQLOutput;
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +18,18 @@ import java.util.List;
 @RequestMapping("/movie")
 public class MovieController {
 
-    @Autowired
     private MovieService movieService;
+    private MovieTypeRepository movieTypeRepository;
+
+    public MovieController(MovieService movieService, MovieTypeRepository movieTypeRepository) {
+        this.movieService = movieService;
+        this.movieTypeRepository = movieTypeRepository;
+    }
+
+    @ModelAttribute("movieTypeList")
+    public List<MovieType> getMovieTypeList()  {
+        return movieTypeRepository.findAll();
+    }
 
     @GetMapping
     public ModelAndView get() {
@@ -71,9 +81,20 @@ public class MovieController {
 
                 modelAndView.addObject("movie", movie);
             }
+            movieService.save(movie);
             return modelAndView;
-
         }
+        @GetMapping("/edit")
+        public ModelAndView edit(@PathParam("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("addMovie");
+
+        Movie movie = movieService.findById(id);
+
+        modelAndView.addObject("movie", movie);
+
+        return modelAndView;
+    }
+
 
         @PutMapping
         public @ResponseBody String put () {

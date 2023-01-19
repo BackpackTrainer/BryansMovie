@@ -54,6 +54,7 @@ public class MovieServiceImpl implements MovieService {
             movie = optMovie.get();
         }else {
             movie = movieRepository.getReferenceById(1L);
+            movie.setId(null);
         }
         return movie;
     }

@@ -80,8 +80,8 @@ public class MovieController {
                 modelAndView.addObject("addMovieTitle", movie.getTitle());
 
                 modelAndView.addObject("movie", movie);
+                movieService.save(movie);
             }
-            movieService.save(movie);
             return modelAndView;
         }
         @GetMapping("/edit")

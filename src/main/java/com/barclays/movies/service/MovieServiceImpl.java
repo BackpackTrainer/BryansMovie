@@ -53,7 +53,12 @@ public class MovieServiceImpl implements MovieService {
         if(optMovie.isPresent()) {
             movie = optMovie.get();
         }else {
-            movie = movieRepository.getReferenceById(1L);
+            movie = new Movie();
+            Movie defaultMovie = movieRepository.getReferenceById(1L);
+            movie.setTitle(defaultMovie.getTitle());
+            movie.setIsbn(defaultMovie.getIsbn());
+            movie.setMovieType(defaultMovie.getMovieType());
+            //movie = movieRepository.getReferenceById(1L);
         }
         return movie;
     }

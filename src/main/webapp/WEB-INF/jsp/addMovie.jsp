@@ -14,7 +14,7 @@
 <h1>We are on the Movies page!</h1>
 
 <c:if test="${addMovieSuccess}">
-    <div>Successfully added Movie with Title: ${addMovieTitle}</div>
+    <div id="success">Successfully added Movie with Title: ${addMovieTitle}</div>
 </c:if>
 
 <form:form action="/movie" method="post" modelAttribute="movie">
@@ -25,7 +25,7 @@
     <form:select path="movieType">
         <form:options items="${movieTypeList}" itemLabel="type" itemValue="id" />
     </form:select>
-    <input type="submit" value="submit">
+    <input id="submit" type="submit" value="submit">
 </form:form>
 </body>
 </html>

@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class WebNavigationStepDefinitions {
     @Before
     public void setUp() {
         WebDriverManager.chromedriver().setup();
-
+//      WebDriverManager.firefoxdriver().setup();
     }
 
     @After
@@ -38,10 +39,8 @@ public class WebNavigationStepDefinitions {
 
     @Given("I have a browser open")
     public void i_have_a_browser_open() {
-        //driver = new ChromeDriver();
-
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
     }
 
@@ -59,10 +58,11 @@ public class WebNavigationStepDefinitions {
     }
 
     @And("I enter {string} in the ISBN Box")
-    public void i_enter_in_the_isbn_box(String isbn) {
+    public void i_enter_in_the_isbn_box(String isbn) throws InterruptedException {
         WebElement isbnField = driver.findElement(By.name("isbn"));
         isbnField.clear();
         isbnField.sendKeys(isbn);
+        Thread.sleep(250);
     }
 
     @And("I enter {string} in the title box")
@@ -108,17 +108,17 @@ public class WebNavigationStepDefinitions {
 
         LocalDateTime dateTime = LocalDateTime.now();
         String fileName = dateTime.toString();
-        fileName = fileName.substring(0,18);
+        fileName = fileName.substring(0,20);
         fileName = fileName.replace(":", "-");
         fileName = fileName.replace(".", "-");
         fileName = status + fileName;
 
         //Build a path to where you want the file stored
-        //Create an empty file in that location
+        //Create an empty file and store it in that location
         String pathAndFileName = "C://Screenshots/" + fileName +".png";
         File destFile = new File("C://Screenshots/" + fileName +".png");
 
-        //Copy the screenshot file into the desired storage file
+        //Copy the screenshot file into the empty file you just created file
         FileUtils.copyFile(srcFile, destFile);
     }
 }

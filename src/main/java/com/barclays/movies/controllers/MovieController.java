@@ -32,15 +32,14 @@ public class MovieController {
     }
 
     @GetMapping
-    public ModelAndView get() {
+     public ModelAndView get() {
         ModelAndView modelAndView = new ModelAndView("movies");
 
         List<Movie> movies = movieService.findAll();
-
         modelAndView.addObject("movies", movies);
-
         return modelAndView;
     }
+
 
     @GetMapping("/add")
     public ModelAndView add()  {
@@ -94,6 +93,8 @@ public class MovieController {
 
         return modelAndView;
     }
+
+
 
         @PutMapping
         public @ResponseBody String put () {

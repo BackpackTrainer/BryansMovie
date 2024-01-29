@@ -28,9 +28,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie save(Movie movie) {
-        logger.info("Entering the save function");
+        logger.info("Entering the Movie save() function");
 
-    movie = movieRepository.saveAndFlush(movie);
+        movie = movieRepository.saveAndFlush(movie);
         return movie;
     }
 
@@ -39,7 +39,6 @@ public class MovieServiceImpl implements MovieService {
         logger.info("Entering findAll function");
 
         List<Movie> movies = movieRepository.findAll();
-
         return movies;
     }
 

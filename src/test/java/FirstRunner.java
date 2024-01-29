@@ -7,6 +7,6 @@ import org.junit.runner.RunWith;
         features = "src/test/java/com/barclays/movies/features",
         glue = "/com/barclays/movies/stepDefinitions",
         tags = "@AddMovie"
-)
+    )
 public class FirstRunner {
 }

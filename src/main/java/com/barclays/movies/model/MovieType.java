@@ -14,6 +14,13 @@ public class MovieType {
     @Column(name = "TYPE")
     private String type;
 
+    public MovieType(String type)  {
+        this.type = type;
+    }
+
+    public MovieType() {
+    }
+
     public Long getId() {
         return id;
     }

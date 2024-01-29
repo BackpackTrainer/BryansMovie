@@ -6,8 +6,9 @@ Feature:  Using a scenario outline
     When I navigate to <web url>
     Then I am on the <page title> page
 
-  Examples:
-    |web url|page title|
-    |"http://localhost:8080"|"Index"|
-    |"http://localhost:8080/movie"|"Get All" |
-    |"http://localhost:8080/movie/add"|"Add Movie"|
+    Examples:
+      | web url                           | page title  |
+      | "http://localhost:8080"           | "Index"     |
+      | "http://localhost:8080/movie"     | "Get All"   |
+      | "http://localhost:8080/movie/add" | "Add Movie" |
+      | "http://localhost:8080/movies"    | "movies"    |

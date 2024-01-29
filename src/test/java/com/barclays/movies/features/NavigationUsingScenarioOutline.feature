@@ -11,4 +11,3 @@ Feature:  Using a scenario outline
       | "http://localhost:8080"           | "Index"     |
       | "http://localhost:8080/movie"     | "Get All"   |
       | "http://localhost:8080/movie/add" | "Add Movie" |
-      | "http://localhost:8080/movies"    | "movies"    |

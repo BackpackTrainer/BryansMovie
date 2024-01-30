@@ -26,8 +26,14 @@ public class WebNavigationStepDefinitions {
 
     @Before
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-//      WebDriverManager.firefoxdriver().setup();
+//        WebDriverManager.chromedriver().setup();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
+//        driver = new ChromeDriver(options);
+
+
+      WebDriverManager.firefoxdriver().setup();
+      driver = new FirefoxDriver();
     }
 
     @After
@@ -39,9 +45,7 @@ public class WebNavigationStepDefinitions {
 
     @Given("I have a browser open")
     public void i_have_a_browser_open() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);
+
     }
 
     @When("I navigate to {string}")
@@ -102,10 +106,12 @@ public class WebNavigationStepDefinitions {
         //Change the WebDriver into something that can take screen shots
         TakesScreenshot screenshot = ((TakesScreenshot) driver);
 
-        //Take the screen shot
-        //Tell Selenium (TakesScreenshot object) what you want to output
+        //Take the screen shot and
+        //Tell Selenium what to output.  In this case we want to output a File
         File srcFile = screenshot.getScreenshotAs(OutputType.FILE);
 
+        //Shorten the dateTime to 20 characters and use "-" to separate year, month and day
+        //Use this String as the file name.
         LocalDateTime dateTime = LocalDateTime.now();
         String fileName = dateTime.toString();
         fileName = fileName.substring(0,20);
@@ -113,12 +119,12 @@ public class WebNavigationStepDefinitions {
         fileName = fileName.replace(".", "-");
         fileName = status + fileName;
 
-        //Build a path to where you want the file stored
-        //Create an empty file and store it in that location
+        //Build a path to where you want the file stored.  These screen shots will be stored in C://Screenshots
+        //Create an empty .png file and store it in that location
         String pathAndFileName = "C://Screenshots/" + fileName +".png";
-        File destFile = new File("C://Screenshots/" + fileName +".png");
+        File destFile = new File(pathAndFileName);
 
-        //Copy the screenshot file into the empty file you just created file
+        //Copy the screenshot file into the empty file you just created
         FileUtils.copyFile(srcFile, destFile);
     }
 }

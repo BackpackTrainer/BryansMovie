@@ -26,21 +26,18 @@ public class WebNavigationStepDefinitions {
 
     @Before
     public void setUp() {
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
+//        WebDriverManager.firefoxdriver().setup();
+//        driver = new FirefoxDriver();
 
-//        WebDriverManager.chromedriver().setup();
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--remote-allow-origins=*");
-//        driver = new ChromeDriver(options);
-
+        WebDriverManager.chromedriver().driverVersion("121.0.6167.140").setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        driver = new ChromeDriver(options);
     }
-
     @After
     public void teardown() throws InterruptedException {
         Thread.sleep(2000);
-        driver.close();
-
+        driver.quit();
     }
 
     @Given("I have a browser open")

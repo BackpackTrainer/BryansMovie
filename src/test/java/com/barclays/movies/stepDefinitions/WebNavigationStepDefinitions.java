@@ -10,7 +10,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
@@ -26,13 +25,12 @@ public class WebNavigationStepDefinitions {
 
     @Before
     public void setUp() {
-//        WebDriverManager.firefoxdriver().setup();
-//        driver = new FirefoxDriver();
+        WebDriverManager.firefoxdriver().setup();
+        driver = new FirefoxDriver();
 
-        WebDriverManager.chromedriver().driverVersion("121.0.6167.140").setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);
+//        WebDriverManager.chromedriver().setup();
+//        driver = new ChromeDriver();
+
     }
     @After
     public void teardown() throws InterruptedException {
